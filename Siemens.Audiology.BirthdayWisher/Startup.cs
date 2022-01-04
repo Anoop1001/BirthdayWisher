@@ -8,6 +8,7 @@ using Siemens.Audiology.BirthdayWisher.Models;
 using Siemens.Audiology.BirthdayWisher.Profiles;
 using Siemens.Audiology.Notification;
 using Siemens.Audiology.Notification.Contract;
+using Siemens.Audiology.Notification.Models;
 using System;
 
 namespace Siemens.Audiology.BirthdayWisher
@@ -24,9 +25,12 @@ namespace Siemens.Audiology.BirthdayWisher
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var identitySettingsSection = Configuration.GetSection("BirthdaySchedulerOptions");
+            var birthdaySchedulerOptions = Configuration.GetSection("BirthdaySchedulerOptions");
+            var smtpConfigutationDetails = Configuration.GetSection("SmtpConfigutationDetails");
+
             services.AddSingleton<IMailer, Mailer>();
-            services.Configure<BirthdaySchedulerOptions>(identitySettingsSection);
+            services.Configure<BirthdaySchedulerOptions>(birthdaySchedulerOptions);
+            services.Configure<SmtpConfigutationDetails>(smtpConfigutationDetails);
             services.AddRazorPages();
             services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(),
                                          AppDomain.CurrentDomain.GetAssemblies()); 

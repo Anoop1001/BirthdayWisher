@@ -14,7 +14,7 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
     public class BirthdayHostedService : BackgroundService
     {
         private readonly CrontabSchedule _schedule;
-        private readonly string Schedule = "0 2 18 * * *";
+        private readonly string Schedule = "0 0 0 * * *";
         private readonly IMailer _mailer;
         private DateTime _nextRun;
         public BirthdayHostedService(IOptions<BirthdaySchedulerOptions> options, IMailer mailer)
@@ -47,7 +47,6 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
             {
                 await _mailer.SendEmailAsync(new EmailData
                 {
-                    From = "anoophn10@gmail.com",
                     To = new List<string> { "anoophn10@gmail.com" },
                     Body = "Hi Anoop, This is a test mail",
                     Subject = "Happy Birthday"
@@ -57,7 +56,7 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
             {
 
             }
-            
+
         }
     }
 

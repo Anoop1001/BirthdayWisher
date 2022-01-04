@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siemens.Audiology.BirthdayW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siemens.Audiology.BirthdayWisher.Business.Contract", "Siemens.Audiology.BirthdayWisher.Business.Contract\Siemens.Audiology.BirthdayWisher.Business.Contract.csproj", "{5283B725-5607-4F6E-AE24-A585A25AE89C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.Audiology.Notification", "Siemens.Audiology.Notification\Siemens.Audiology.Notification.csproj", "{23519D34-3B87-40AA-80BC-1EF57F9786C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siemens.Audiology.Notification", "Siemens.Audiology.Notification\Siemens.Audiology.Notification.csproj", "{23519D34-3B87-40AA-80BC-1EF57F9786C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.Audiology.Notification.Contract", "Siemens.Audiology.Notification.Contract\Siemens.Audiology.Notification.Contract.csproj", "{23FB715B-0871-4712-85F8-DAB90DC563D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Siemens.Audiology.Notification.Contract", "Siemens.Audiology.Notification.Contract\Siemens.Audiology.Notification.Contract.csproj", "{23FB715B-0871-4712-85F8-DAB90DC563D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siemens.Audiology.BirthdayWisher.Data", "Siemens.Audiology.BirthdayWisher.Data\Siemens.Audiology.BirthdayWisher.Data.csproj", "{D4A4D84E-6D01-437D-848F-9D63991A5254}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{23FB715B-0871-4712-85F8-DAB90DC563D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23FB715B-0871-4712-85F8-DAB90DC563D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23FB715B-0871-4712-85F8-DAB90DC563D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4A4D84E-6D01-437D-848F-9D63991A5254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A4D84E-6D01-437D-848F-9D63991A5254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A4D84E-6D01-437D-848F-9D63991A5254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A4D84E-6D01-437D-848F-9D63991A5254}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
