@@ -4,4 +4,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Siemens.Audiology.BirthdayWisher.Data.Contract\Siemens.Audiology.BirthdayWisher.Data.Contract.csproj" />
+  </ItemGroup>
+
 </Project>
