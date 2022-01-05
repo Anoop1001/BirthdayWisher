@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Siemens.Audiology.BirthdayWisher.HostedServices;
 using Siemens.Audiology.BirthdayWisher.Models;
 using Siemens.Audiology.BirthdayWisher.Profiles;
 using Siemens.Audiology.Notification;
 using Siemens.Audiology.Notification.Contract;
 using Siemens.Audiology.Notification.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 
 namespace Siemens.Audiology.BirthdayWisher
@@ -27,14 +30,22 @@ namespace Siemens.Audiology.BirthdayWisher
         {
             var birthdaySchedulerOptions = Configuration.GetSection("BirthdaySchedulerOptions");
             var smtpConfigutationDetails = Configuration.GetSection("SmtpConfigutationDetails");
-
+            services.AddMvcCore().AddApiExplorer();
             services.AddSingleton<IMailer, Mailer>();
             services.Configure<BirthdaySchedulerOptions>(birthdaySchedulerOptions);
             services.Configure<SmtpConfigutationDetails>(smtpConfigutationDetails);
-            services.AddRazorPages();
-            services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(),
-                                         AppDomain.CurrentDomain.GetAssemblies()); 
+            services.Configure<MvcOptions>(c => c.Conventions.Add(new SwaggerApplicationConvention())); services.AddRazorPages();
+            services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(), AppDomain.CurrentDomain.GetAssemblies());
             services.AddHostedService<BirthdayHostedService>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "ToDo API",
+                    Description = "A simple example ASP.NET Core Web API"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +64,13 @@ namespace Siemens.Audiology.BirthdayWisher
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
 
+            });
             app.UseRouting();
 
             app.UseAuthorization();
