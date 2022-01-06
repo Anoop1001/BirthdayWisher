@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Siemens.Audiology.BirthdayWisher.Business.Contract;
+using Siemens.Audiology.BirthdayWisher.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,11 +13,16 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
     [ApiController]
     public class BirthdayInformationController : ControllerBase
     {
+        private readonly IBirthdayCalendarProcessor _birthdayCalendarProcessor;
+        public BirthdayInformationController(IBirthdayCalendarProcessor birthdayCalendarProcessor)
+        {
+            _birthdayCalendarProcessor = birthdayCalendarProcessor;
+        }
         // GET: api/<BirthdayInformationController>
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<IEnumerable<BirthdayInformation>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return await _birthdayCalendarProcessor.GetBirthDayDetails();
         }
 
         // GET api/<BirthdayInformationController>/5
@@ -28,6 +36,7 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         [HttpPost]
         public async Task Post([FromBody] string value)
         {
+            await _birthdayCalendarProcessor.AddBirthDayDetails();
         }
 
         // PUT api/<BirthdayInformationController>/5

@@ -5,14 +5,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Siemens.Audiology.BirthdayWisher.Business;
+using Siemens.Audiology.BirthdayWisher.Business.Contract;
+using Siemens.Audiology.BirthdayWisher.Data;
+using Siemens.Audiology.BirthdayWisher.Data.Contract;
 using Siemens.Audiology.BirthdayWisher.HostedServices;
 using Siemens.Audiology.BirthdayWisher.Models;
 using Siemens.Audiology.BirthdayWisher.Profiles;
 using Siemens.Audiology.Notification;
 using Siemens.Audiology.Notification.Contract;
 using Siemens.Audiology.Notification.Models;
+using SQLite;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
+using System.IO;
 
 namespace Siemens.Audiology.BirthdayWisher
 {
@@ -32,11 +38,16 @@ namespace Siemens.Audiology.BirthdayWisher
             var smtpConfigutationDetails = Configuration.GetSection("SmtpConfigutationDetails");
             services.AddMvcCore().AddApiExplorer();
             services.AddSingleton<IMailer, Mailer>();
+            services.AddSingleton<IDatabaseRepository, DatabaseRepository>();
+            services.AddTransient<IBirthdayCalendarProcessor, BirthdayCalendarProcessor>();
             services.Configure<BirthdaySchedulerOptions>(birthdaySchedulerOptions);
             services.Configure<SmtpConfigutationDetails>(smtpConfigutationDetails);
             services.Configure<MvcOptions>(c => c.Conventions.Add(new SwaggerApplicationConvention())); services.AddRazorPages();
             services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(), AppDomain.CurrentDomain.GetAssemblies());
             services.AddHostedService<BirthdayHostedService>();
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Birthday_DB.db");
+            var sqLiteConnection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex);
+            services.AddSingleton(sqLiteConnection);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using NCrontab;
+using Siemens.Audiology.BirthdayWisher.Business.Contract;
 using Siemens.Audiology.BirthdayWisher.Models;
 using Siemens.Audiology.Notification;
 using Siemens.Audiology.Notification.Contract;
@@ -17,12 +18,14 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
         private readonly string Schedule = "0 0 0 * * *";
         private readonly IMailer _mailer;
         private DateTime _nextRun;
-        public BirthdayHostedService(IOptions<BirthdaySchedulerOptions> options, IMailer mailer)
+        private readonly IBirthdayCalendarProcessor _birthdayCalendarProcessor;
+        public BirthdayHostedService(IOptions<BirthdaySchedulerOptions> options, IMailer mailer, IBirthdayCalendarProcessor birthdayCalendarProcessor)
         {
             Schedule = options.Value.CronExpression ?? Schedule;
             _schedule = CrontabSchedule.Parse(Schedule, new CrontabSchedule.ParseOptions { IncludingSeconds = true });
             _nextRun = _schedule.GetNextOccurrence(DateTime.Now);
             _mailer = mailer;
+            _birthdayCalendarProcessor = birthdayCalendarProcessor;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,6 +48,7 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
         {
             try
             {
+                var listOfBirthDays = await _birthdayCalendarProcessor.GetBirthDayDetails();
                 await _mailer.SendEmailAsync(new EmailData
                 {
                     To = new List<string> { "anoophn10@gmail.com" },

@@ -25,6 +25,11 @@ namespace Siemens.Audiology.BirthdayWisher.Data
             return await Task.FromResult(_connection.Table<T>().ToList());
         }
 
+        public async Task<List<T>> GetQueryableData<T>(string query) where T : new()
+        {
+            return await Task.FromResult(_connection.Query<T>(query, null));
+        }
+
         public async Task ClearData<T>()
         {
             await Task.FromResult(_connection.DeleteAll<T>());
@@ -38,6 +43,11 @@ namespace Siemens.Audiology.BirthdayWisher.Data
         public async Task InsertData<T>(T data)
         {
             await Task.FromResult(_connection.Insert(data));
+        }
+
+        public async Task InsertDataList<T>(List<T> data)
+        {
+            await Task.FromResult(_connection.InsertAll(data));
         }
     }
 }

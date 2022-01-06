@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Siemens.Audiology.BirthdayWisher.Data\Siemens.Audiology.BirthdayWisher.Data.csproj" />
+  </ItemGroup>
+
 </Project>
