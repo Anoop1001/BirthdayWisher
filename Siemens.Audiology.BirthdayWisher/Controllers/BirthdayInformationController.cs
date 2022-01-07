@@ -13,10 +13,12 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
     [ApiController]
     public class BirthdayInformationController : ControllerBase
     {
+        private readonly IExcelReader _excelReader;
         private readonly IBirthdayCalendarProcessor _birthdayCalendarProcessor;
-        public BirthdayInformationController(IBirthdayCalendarProcessor birthdayCalendarProcessor)
+        public BirthdayInformationController(IBirthdayCalendarProcessor birthdayCalendarProcessor, IExcelReader excelReader)
         {
             _birthdayCalendarProcessor = birthdayCalendarProcessor;
+            _excelReader = excelReader;
         }
         // GET: api/<BirthdayInformationController>
         [HttpGet]
@@ -37,6 +39,16 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         public async Task Post([FromBody] string value)
         {
             await _birthdayCalendarProcessor.AddBirthDayDetails();
+        }
+
+        // POST api/<BirthdayInformationController>
+        [HttpPost]
+        [Route("[action]")]
+        public async Task UploadExcel(IFormFile value)
+        {
+            var list = _excelReader.ReadData(value);
+            await _birthdayCalendarProcessor.ClearDetails();
+            await _birthdayCalendarProcessor.AddBirthDayDetailsList(list);
         }
 
         // PUT api/<BirthdayInformationController>/5
