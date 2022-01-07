@@ -48,7 +48,7 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
         {
             try
             {
-                var listOfBirthDays = await _birthdayCalendarProcessor.GetBirthDayDetails();
+                var listOfBirthDays = await _birthdayCalendarProcessor.GetBirthDayDetailsForToday();
                 var taskListToSendEmail = new List<Task>();
                 listOfBirthDays.ForEach(x =>
                 {

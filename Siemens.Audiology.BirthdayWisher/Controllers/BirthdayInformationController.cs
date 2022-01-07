@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Siemens.Audiology.BirthdayWisher.Business.Contract;
 using Siemens.Audiology.BirthdayWisher.Data.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,18 +14,27 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
     [ApiController]
     public class BirthdayInformationController : ControllerBase
     {
-        private readonly IExcelReader _excelReader;
+        private readonly IExcelHandler _excelHandler;
         private readonly IBirthdayCalendarProcessor _birthdayCalendarProcessor;
-        public BirthdayInformationController(IBirthdayCalendarProcessor birthdayCalendarProcessor, IExcelReader excelReader)
+        public BirthdayInformationController(IBirthdayCalendarProcessor birthdayCalendarProcessor, IExcelHandler excelHandler)
         {
             _birthdayCalendarProcessor = birthdayCalendarProcessor;
-            _excelReader = excelReader;
+            _excelHandler = excelHandler;
         }
+
         // GET: api/<BirthdayInformationController>
         [HttpGet]
-        public async Task<IEnumerable<BirthdayInformation>> Get()
+        public async Task<IEnumerable<BirthdayInformation>> GetToday()
         {
-            return await _birthdayCalendarProcessor.GetBirthDayDetails();
+            return await _birthdayCalendarProcessor.GetBirthDayDetailsForToday();
+        }
+
+        // GET: api/<BirthdayInformationController>
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IEnumerable<BirthdayInformation>> GetAll()
+        {
+            return await _birthdayCalendarProcessor.GetAllBirthDayDetails();
         }
 
         // GET api/<BirthdayInformationController>/5
@@ -32,6 +42,14 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         public async Task<string> Get(int id)
         {
             return "value";
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> DownloadExcel(string filename)
+        {
+            var information = await _excelHandler.DownloadData();
+            return File(information.Item1, information.Item2, information.Item3);
         }
 
         // POST api/<BirthdayInformationController>
@@ -46,7 +64,7 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         [Route("[action]")]
         public async Task UploadExcel(IFormFile value)
         {
-            var list = _excelReader.ReadData(value);
+            var list = _excelHandler.ReadData(value);
             await _birthdayCalendarProcessor.ClearDetails();
             await _birthdayCalendarProcessor.AddBirthDayDetailsList(list);
         }
