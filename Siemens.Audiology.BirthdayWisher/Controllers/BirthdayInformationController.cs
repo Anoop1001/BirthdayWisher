@@ -46,7 +46,7 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> DownloadExcel(string filename)
+        public async Task<IActionResult> DownloadExcel()
         {
             var information = await _excelHandler.DownloadData();
             return File(information.Item1, information.Item2, information.Item3);
