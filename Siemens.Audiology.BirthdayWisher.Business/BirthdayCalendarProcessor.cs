@@ -31,5 +31,10 @@ namespace Siemens.Audiology.BirthdayWisher.Business
         {
             await _databaseRepository.InsertDataList(birthdays);
         }
+
+        public async Task ClearDetails()
+        {
+            await _databaseRepository.ClearData<BirthdayInformation>();
+        }
     }
 }

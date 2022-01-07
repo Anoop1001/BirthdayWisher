@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Siemens.Audiology.BirthdayWisher.Business;
@@ -40,6 +41,7 @@ namespace Siemens.Audiology.BirthdayWisher
             services.AddSingleton<IMailer, Mailer>();
             services.AddSingleton<IDatabaseRepository, DatabaseRepository>();
             services.AddTransient<IBirthdayCalendarProcessor, BirthdayCalendarProcessor>();
+            services.AddSingleton<IExcelReader, ExcelReader>();
             services.Configure<BirthdaySchedulerOptions>(birthdaySchedulerOptions);
             services.Configure<SmtpConfigutationDetails>(smtpConfigutationDetails);
             services.Configure<MvcOptions>(c => c.Conventions.Add(new SwaggerApplicationConvention())); services.AddRazorPages();
@@ -73,9 +75,18 @@ namespace Siemens.Audiology.BirthdayWisher
                 app.UseHsts();
             }
 
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "StaticFile")
+                    ),
+                RequestPath = "/Template",
+                EnableDefaultFiles = true
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSwagger();
+                        app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");

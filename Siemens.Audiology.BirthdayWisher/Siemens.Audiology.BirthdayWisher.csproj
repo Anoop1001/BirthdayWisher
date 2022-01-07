@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="StaticFile\Birthday.jpg" />
+    <Content Include="StaticFile\index.html" />
+    <Content Include="StaticFile\index.html.bak" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="NCrontab.Signed" Version="3.3.2" />
