@@ -49,12 +49,18 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
             try
             {
                 var listOfBirthDays = await _birthdayCalendarProcessor.GetBirthDayDetails();
-                await _mailer.SendEmailAsync(new EmailData
+                var taskListToSendEmail = new List<Task>();
+                listOfBirthDays.ForEach(x =>
                 {
-                    To = new List<string> { "anoophn10@gmail.com" },
-                    Body = "Hi Anoop, This is a test mail",
-                    Subject = "Happy Birthday"
+                    var task = _mailer.SendEmailAsync(new EmailData
+                    {
+                        To = new List<string> { x.Email },
+                        Body = $"Hi {x.Name}, This is a test mail",
+                        Subject = "Happy Birthday"
+                    });
+                    taskListToSendEmail.Add(task);
                 });
+                await Task.WhenAll(taskListToSendEmail);
             }
             catch (Exception ex)
             {

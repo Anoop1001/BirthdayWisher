@@ -3,6 +3,7 @@ using Siemens.Audiology.BirthdayWisher.Data.Contract;
 using Siemens.Audiology.BirthdayWisher.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Siemens.Audiology.BirthdayWisher.Business
@@ -22,7 +23,8 @@ namespace Siemens.Audiology.BirthdayWisher.Business
 
         public async Task<List<BirthdayInformation>> GetBirthDayDetails()
         {
-            return await _databaseRepository.GetAllData<BirthdayInformation>();
+            var birthdayList =  await _databaseRepository.GetAllData<BirthdayInformation>();
+            return birthdayList.Where(x => x.BirthDate.ToString("d") == DateTimeOffset.UtcNow.ToString("d")).ToList();
         }
 
         public async Task AddBirthDayDetailsList(List<BirthdayInformation> birthdays)
