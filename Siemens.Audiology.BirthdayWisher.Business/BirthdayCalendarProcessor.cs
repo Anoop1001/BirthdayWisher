@@ -21,10 +21,15 @@ namespace Siemens.Audiology.BirthdayWisher.Business
             await _databaseRepository.InsertData(new BirthdayInformation { BirthDate = DateTime.Now, Name = "ABC" });
         }
 
-        public async Task<List<BirthdayInformation>> GetBirthDayDetails()
+        public async Task<List<BirthdayInformation>> GetBirthDayDetailsForToday()
         {
             var birthdayList =  await _databaseRepository.GetAllData<BirthdayInformation>();
             return birthdayList.Where(x => x.BirthDate.ToString("d") == DateTimeOffset.UtcNow.ToString("d")).ToList();
+        }
+
+        public async Task<List<BirthdayInformation>> GetAllBirthDayDetails()
+        {
+            return await _databaseRepository.GetAllData<BirthdayInformation>();
         }
 
         public async Task AddBirthDayDetailsList(List<BirthdayInformation> birthdays)

@@ -52,7 +52,7 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
         {
             try
             {
-                var listOfBirthDays = await _birthdayCalendarProcessor.GetBirthDayDetails();
+                var listOfBirthDays = await _birthdayCalendarProcessor.GetBirthDayDetailsForToday();
                 var taskListToSendEmail = new List<Task>();
                 var processedEmailData = new List<EmailData>();
                 var emailDataList = _emailDataGenerator.GetEmailDataList(listOfBirthDays).ToList();

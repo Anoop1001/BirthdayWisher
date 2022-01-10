@@ -42,7 +42,7 @@ namespace Siemens.Audiology.BirthdayWisher
             services.AddSingleton<IMailer, Mailer>();
             services.AddSingleton<IDatabaseRepository, DatabaseRepository>();
             services.AddTransient<IBirthdayCalendarProcessor, BirthdayCalendarProcessor>();
-            services.AddSingleton<IExcelReader, ExcelReader>();
+            services.AddSingleton<IExcelHandler, ExcelHandler>();
             services.AddSingleton<IEmailDataGenerator, EmailDataGenerator>();
             services.Configure<BirthdaySchedulerOptions>(birthdaySchedulerOptions);
             services.Configure<SmtpConfigutationDetails>(smtpConfigutationDetails);
