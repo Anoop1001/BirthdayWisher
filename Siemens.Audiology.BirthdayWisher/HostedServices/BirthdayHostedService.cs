@@ -3,10 +3,12 @@ using Microsoft.Extensions.Options;
 using NCrontab;
 using Siemens.Audiology.BirthdayWisher.Business.Contract;
 using Siemens.Audiology.BirthdayWisher.Models;
+using Siemens.Audiology.BirthdayWisher.Utilities;
 using Siemens.Audiology.Notification;
 using Siemens.Audiology.Notification.Contract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,13 +21,15 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
         private readonly IMailer _mailer;
         private DateTime _nextRun;
         private readonly IBirthdayCalendarProcessor _birthdayCalendarProcessor;
-        public BirthdayHostedService(IOptions<BirthdaySchedulerOptions> options, IMailer mailer, IBirthdayCalendarProcessor birthdayCalendarProcessor)
+        private readonly IEmailDataGenerator _emailDataGenerator;
+        public BirthdayHostedService(IOptions<BirthdaySchedulerOptions> options, IMailer mailer, IBirthdayCalendarProcessor birthdayCalendarProcessor, IEmailDataGenerator emailDataGenerator)
         {
             Schedule = options.Value.CronExpression ?? Schedule;
             _schedule = CrontabSchedule.Parse(Schedule, new CrontabSchedule.ParseOptions { IncludingSeconds = true });
             _nextRun = _schedule.GetNextOccurrence(DateTime.Now);
             _mailer = mailer;
             _birthdayCalendarProcessor = birthdayCalendarProcessor;
+            _emailDataGenerator = emailDataGenerator;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -50,14 +54,15 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
             {
                 var listOfBirthDays = await _birthdayCalendarProcessor.GetBirthDayDetails();
                 var taskListToSendEmail = new List<Task>();
-                listOfBirthDays.ForEach(x =>
+                var processedEmailData = new List<EmailData>();
+                var emailDataList = _emailDataGenerator.GetEmailDataList(listOfBirthDays).ToList();
+                emailDataList.ForEach(x =>
                 {
-                    var task = _mailer.SendEmailAsync(new EmailData
-                    {
-                        To = new List<string> { x.Email },
-                        Body = $"Hi {x.Name}, This is a test mail",
-                        Subject = "Happy Birthday"
-                    });
+                    processedEmailData.Add(x);
+                });
+                processedEmailData.ForEach(x =>
+                {
+                    var task = _mailer.SendEmailAsync(x);
                     taskListToSendEmail.Add(task);
                 });
                 await Task.WhenAll(taskListToSendEmail);

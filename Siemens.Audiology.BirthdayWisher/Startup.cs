@@ -13,6 +13,7 @@ using Siemens.Audiology.BirthdayWisher.Data.Contract;
 using Siemens.Audiology.BirthdayWisher.HostedServices;
 using Siemens.Audiology.BirthdayWisher.Models;
 using Siemens.Audiology.BirthdayWisher.Profiles;
+using Siemens.Audiology.BirthdayWisher.Utilities;
 using Siemens.Audiology.Notification;
 using Siemens.Audiology.Notification.Contract;
 using Siemens.Audiology.Notification.Models;
@@ -42,6 +43,7 @@ namespace Siemens.Audiology.BirthdayWisher
             services.AddSingleton<IDatabaseRepository, DatabaseRepository>();
             services.AddTransient<IBirthdayCalendarProcessor, BirthdayCalendarProcessor>();
             services.AddSingleton<IExcelReader, ExcelReader>();
+            services.AddSingleton<IEmailDataGenerator, EmailDataGenerator>();
             services.Configure<BirthdaySchedulerOptions>(birthdaySchedulerOptions);
             services.Configure<SmtpConfigutationDetails>(smtpConfigutationDetails);
             services.Configure<MvcOptions>(c => c.Conventions.Add(new SwaggerApplicationConvention())); services.AddRazorPages();
