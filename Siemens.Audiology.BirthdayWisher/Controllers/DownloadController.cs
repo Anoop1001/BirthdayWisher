@@ -10,11 +10,9 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
     public class DownloadController : ControllerBase
     {
         // private readonly string _filePath;
-        private readonly IHostEnvironment _hostingEnvironment;
         private readonly IEmailDataGenerator _emailDataGenerator;
-        public DownloadController(IHostEnvironment hostingEnvironment, IEmailDataGenerator emailDataGenerator)
+        public DownloadController(IEmailDataGenerator emailDataGenerator)
         {
-            _hostingEnvironment = hostingEnvironment;
             _emailDataGenerator = emailDataGenerator;
         }
 
