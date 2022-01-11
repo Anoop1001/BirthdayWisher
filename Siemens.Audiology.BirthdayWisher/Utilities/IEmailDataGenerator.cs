@@ -7,5 +7,6 @@ namespace Siemens.Audiology.BirthdayWisher.Utilities
     public interface IEmailDataGenerator
     {
         IEnumerable<EmailData> GetEmailDataList(List<BirthdayInformation> birthdays);
+        byte[] GetTemplateData();
     }
 }

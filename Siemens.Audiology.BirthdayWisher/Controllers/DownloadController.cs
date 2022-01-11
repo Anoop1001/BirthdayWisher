@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using Siemens.Audiology.BirthdayWisher.Utilities;
+using System.IO;
 
 namespace Siemens.Audiology.BirthdayWisher.Controllers
 {
@@ -11,18 +9,19 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
     [ApiController]
     public class DownloadController : ControllerBase
     {
-       // private readonly string _filePath;
-        public DownloadController(string filePath)
+        // private readonly string _filePath;
+        private readonly IHostEnvironment _hostingEnvironment;
+        private readonly IEmailDataGenerator _emailDataGenerator;
+        public DownloadController(IHostEnvironment hostingEnvironment, IEmailDataGenerator emailDataGenerator)
         {
-           // _filePath = filePath;
+            _hostingEnvironment = hostingEnvironment;
+            _emailDataGenerator = emailDataGenerator;
         }
 
-        //[HttpGet]
-        //public FileContentResult ShowTemplate()
-        //{
-        //    string fileName = "index.html";
-        //    string filePath = HttpContext.Current.Server.MapPath("~/StaticFile/") + fileName;
-        //    return File(System.IO.File.ReadAllBytes(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory())), "text/html", "index.html");
-        //}
+        [HttpGet]
+        public IActionResult ShowTemplate()
+        {
+            return File(_emailDataGenerator.GetTemplateData(), "text/html", "index.html");
+        }
     }
 }
