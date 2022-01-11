@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Siemens.Audiology.BirthdayWisher.Utilities;
-using System.IO;
 
 namespace Siemens.Audiology.BirthdayWisher.Controllers
 {
