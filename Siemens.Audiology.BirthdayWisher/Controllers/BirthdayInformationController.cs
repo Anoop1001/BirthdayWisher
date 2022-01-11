@@ -54,9 +54,9 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
 
         // POST api/<BirthdayInformationController>
         [HttpPost]
-        public async Task Post([FromBody] string value)
+        public async Task Post([FromBody] BirthdayInformation birthdayInformation)
         {
-            await _birthdayCalendarProcessor.AddBirthDayDetails();
+            await _birthdayCalendarProcessor.AddBirthDayDetails(birthdayInformation);
         }
 
         // POST api/<BirthdayInformationController>

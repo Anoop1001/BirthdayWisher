@@ -16,9 +16,9 @@ namespace Siemens.Audiology.BirthdayWisher.Business
             _databaseRepository = databaseRepository;
         }
 
-        public async Task AddBirthDayDetails()
+        public async Task AddBirthDayDetails(BirthdayInformation birthdayInformation)
         {
-            await _databaseRepository.InsertData(new BirthdayInformation { BirthDate = DateTime.Now, Name = "ABC" });
+            await _databaseRepository.InsertData(birthdayInformation);
         }
 
         public async Task<List<BirthdayInformation>> GetBirthDayDetailsForToday()
