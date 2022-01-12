@@ -77,9 +77,10 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         }
 
         // DELETE api/<BirthdayInformationController>/5
-        [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        [HttpDelete("{emailId}")]
+        public async Task Delete(string emailId)
         {
+            await _birthdayCalendarProcessor.DeleteBirthdayByEmailId(emailId);
         }
     }
 }

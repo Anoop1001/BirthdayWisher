@@ -40,6 +40,11 @@ namespace Siemens.Audiology.BirthdayWisher.Data
             await Task.FromResult(_connection.Delete<T>(id));
         }
 
+        public async Task DeleteDataAsync<T>(T data)
+        {
+            await Task.FromResult(_connection.Delete(data));
+        }
+
         public async Task InsertData<T>(T data)
         {
             await Task.FromResult(_connection.Insert(data));

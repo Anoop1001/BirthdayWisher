@@ -12,5 +12,6 @@ namespace Siemens.Audiology.BirthdayWisher.Data.Contract
         Task DeleteOneAsync<T>(object id);
         Task InsertDataList<T>(List<T> data);
         Task UpdateData<T>(T data);
+        Task DeleteDataAsync<T>(T data);
     }
 }

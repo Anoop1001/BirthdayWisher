@@ -42,6 +42,16 @@ namespace Siemens.Audiology.BirthdayWisher.Business
             await _databaseRepository.InsertDataList(birthdays);
         }
 
+        public async Task DeleteBirthdayByEmailId(string emailId)
+        {
+            var birthday = (await GetAllBirthDayDetails()).FirstOrDefault(x => x.Email == emailId);
+            if(birthday == null)
+            {
+                throw new ArgumentException("Invalid Email Id");
+            }
+            await _databaseRepository.DeleteDataAsync(birthday);
+        }
+
         public async Task ClearDetails()
         {
             await _databaseRepository.ClearData<BirthdayInformation>();

@@ -12,5 +12,6 @@ namespace Siemens.Audiology.BirthdayWisher.Business.Contract
         Task AddBirthDayDetailsList(List<BirthdayInformation> birthdays);
         Task ClearDetails();
         Task UpdateBirthDayDetails(BirthdayInformation birthdayInformation);
+        Task DeleteBirthdayByEmailId(string emailId);
     }
 }
