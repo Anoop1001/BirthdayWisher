@@ -70,9 +70,10 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         }
 
         // PUT api/<BirthdayInformationController>/5
-        [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task Put([FromBody] BirthdayInformation birthdayInformation)
         {
+            await _birthdayCalendarProcessor.UpdateBirthDayDetails(birthdayInformation);
         }
 
         // DELETE api/<BirthdayInformationController>/5

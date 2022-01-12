@@ -49,5 +49,10 @@ namespace Siemens.Audiology.BirthdayWisher.Data
         {
             await Task.FromResult(_connection.InsertAll(data));
         }
+
+        public async Task UpdateData<T>(T data)
+        {
+            await Task.FromResult(_connection.Update(data));
+        }
     }
 }

@@ -7,7 +7,6 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
     [ApiController]
     public class DownloadController : ControllerBase
     {
-        // private readonly string _filePath;
         private readonly IEmailDataGenerator _emailDataGenerator;
         public DownloadController(IEmailDataGenerator emailDataGenerator)
         {
