@@ -29,7 +29,7 @@ namespace Siemens.Audiology.BirthdayWisher.Business
         public async Task<List<BirthdayInformation>> GetBirthDayDetailsForToday()
         {
             var birthdayList =  await _databaseRepository.GetAllData<BirthdayInformation>();
-            return birthdayList.Where(x => x.BirthDate.ToString("dd MM") == DateTime.UtcNow.ToString("dd MM")).ToList();
+            return birthdayList.Where(x => x.BirthDate.ToString("dd MM") == DateTime.Now.ToString("dd MM")).ToList();
         }
 
         public async Task<List<BirthdayInformation>> GetAllBirthDayDetails()
