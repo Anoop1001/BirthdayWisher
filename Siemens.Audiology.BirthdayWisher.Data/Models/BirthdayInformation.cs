@@ -6,7 +6,7 @@ namespace Siemens.Audiology.BirthdayWisher.Data.Models
 {
     public class BirthdayInformation
     {
-        [PrimaryKey]
+        [PrimaryKey, AutoIncrement]
         public Guid Id { get; set; }
         public string Name { get; set; }
         [Unique]

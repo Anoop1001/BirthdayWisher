@@ -9,6 +9,7 @@ using ClosedXML.Excel;
 using ExcelDataReader;
 using Microsoft.AspNetCore.Http;
 using Siemens.Audiology.BirthdayWisher.Business.Contract;
+using Siemens.Audiology.BirthdayWisher.Data.Enums;
 using Siemens.Audiology.BirthdayWisher.Data.Models;
 
 namespace Siemens.Audiology.BirthdayWisher.Business
@@ -48,7 +49,8 @@ namespace Siemens.Audiology.BirthdayWisher.Business
                             Name = reader[0].ToString(),
                             Email = reader[1].ToString(),
                             GId = reader[2].ToString(),
-                            BirthDate = Convert.ToDateTime(reader[3])
+                            Gender = (Gender) Enum.Parse(typeof(Gender), reader[3].ToString()),
+                            BirthDate = Convert.ToDateTime(reader[4])
                         }); 
                     }
                 }
@@ -104,7 +106,7 @@ namespace Siemens.Audiology.BirthdayWisher.Business
             PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo prop in Props)
             {
-                if(prop.Name == "Name" || prop.Name == "GId" || prop.Name == "BirthDate" || prop.Name == "Email")
+                if(prop.Name == "Name" || prop.Name == "GId" || prop.Name == "BirthDate" || prop.Name == "Email" || prop.Name == "Gender")
                 //Setting column names as Property names
                     dataTable.Columns.Add(prop.Name);
             }
@@ -114,7 +116,7 @@ namespace Siemens.Audiology.BirthdayWisher.Business
                 var values = new object[dataTable.Columns.Count];
                 foreach (PropertyInfo prop in Props)
                 {
-                    if (prop.Name == "Name" || prop.Name == "GId" || prop.Name == "BirthDate" || prop.Name == "Email")
+                    if (prop.Name == "Name" || prop.Name == "GId" || prop.Name == "BirthDate" || prop.Name == "Email" || prop.Name == "Gender")
                     {
                         //inserting property values to datatable rows
                         values[i] = prop.GetValue(item, null);
