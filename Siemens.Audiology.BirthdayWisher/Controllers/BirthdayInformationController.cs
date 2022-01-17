@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Siemens.Audiology.BirthdayWisher.Business.Contract;
 using Siemens.Audiology.BirthdayWisher.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -48,8 +50,11 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         [Route("[action]")]
         public async Task<IActionResult> DownloadExcel()
         {
-            var information = await _excelHandler.DownloadData();
-            return File(information.Item1, information.Item2, information.Item3);
+            //var information = await _excelHandler.DownloadData();
+            //return File(information.Item1, information.Item2, information.Item3);
+            var list = await GetAll();
+            var stream = _excelHandler.DownloadData2(list.ToList());
+            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "information.xlsx");
         }
 
         // POST api/<BirthdayInformationController>
@@ -62,11 +67,19 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         // POST api/<BirthdayInformationController>
         [HttpPost]
         [Route("[action]")]
-        public async Task UploadExcel(IFormFile value)
+        public async Task<IActionResult> UploadExcel(IFormFile value)
         {
-            var list = _excelHandler.ReadData(value);
-            await _birthdayCalendarProcessor.ClearDetails();
-            await _birthdayCalendarProcessor.AddBirthDayDetailsList(list);
+            try
+            {
+                var list = _excelHandler.ReadData(value);
+                await _birthdayCalendarProcessor.ClearDetails();
+                await _birthdayCalendarProcessor.AddBirthDayDetailsList(list);
+                return StatusCode(StatusCodes.Status200OK);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Please upload a valid excel file.\n" + ex);
+            }
         }
 
         // PUT api/<BirthdayInformationController>/5
