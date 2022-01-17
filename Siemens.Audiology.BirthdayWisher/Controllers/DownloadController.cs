@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Siemens.Audiology.BirthdayWisher.Data.Enums;
 using Siemens.Audiology.BirthdayWisher.Utilities;
 
 namespace Siemens.Audiology.BirthdayWisher.Controllers
@@ -14,9 +15,9 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowTemplate()
+        public IActionResult ShowTemplate([FromQuery] Gender gender, [FromQuery] string name)
         {
-            return File(_emailDataGenerator.GetTemplateData(), "text/html", "index.html");
+            return File(_emailDataGenerator.GetTemplateData(gender, name), "text/html", "index.html");
         }
     }
 }

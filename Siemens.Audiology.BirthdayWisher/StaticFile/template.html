@@ -7,21 +7,21 @@
     <style>
         @font-face {
             font-family: comfotaaBold;
-            src: url(Comfortaa-Bold.ttf);
+            src: url('{{comforta-bold-font}}');
         }
 
         @font-face {
             font-family: comfotaaMedium;
-            src: url(Comfortaa-Medium.ttf);
+            src: url('{{comforta-medium-font}}');
         }
 
         @font-face {
             font-family: comfotaaRegular;
-            src: url(Comfortaa-Regular.ttf);
+            src: url('{{comforta-regular-font}}');
         }
 
         body {
-            background-image: url('bg-boy.png');
+            background-image: url('{{background-image}}');
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: cover;
@@ -65,7 +65,7 @@
 <body>
     <h2>Dear</h2>
     <div style="display:flex">
-        <h1>{{name}}</h1> <img class="hat" src="male-hat.png" />
+        <h1>{{name}}</h1> <img class="hat" src="{{hat-image}}" />
     </div>
     <br />
     <p>On the special and joyous occasion of your birthday,<br /> we wish you a very Happy Birthday.</p>

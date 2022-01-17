@@ -21,6 +21,7 @@ using SQLite;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.IO;
+using System.Text.Json.Serialization;
 
 namespace Siemens.Audiology.BirthdayWisher
 {
@@ -38,7 +39,11 @@ namespace Siemens.Audiology.BirthdayWisher
         {
             var birthdaySchedulerOptions = Configuration.GetSection("BirthdaySchedulerOptions");
             var smtpConfigutationDetails = Configuration.GetSection("SmtpConfigutationDetails");
-            services.AddMvcCore().AddApiExplorer();
+            services.AddMvcCore().AddApiExplorer().AddJsonOptions(opts =>
+            {
+                var enumConverter = new JsonStringEnumConverter();
+                opts.JsonSerializerOptions.Converters.Add(enumConverter);
+            });
             services.AddSingleton<IMailer, Mailer>();
             services.AddSingleton<IDatabaseRepository, DatabaseRepository>();
             services.AddTransient<IBirthdayCalendarProcessor, BirthdayCalendarProcessor>();
