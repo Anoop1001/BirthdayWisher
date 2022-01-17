@@ -11,5 +11,7 @@ namespace Siemens.Audiology.BirthdayWisher.Business.Contract
     {
         public List<BirthdayInformation> ReadData(IFormFile FileName);
         public System.Threading.Tasks.Task<Tuple<MemoryStream, string, string>> DownloadData();
+
+        public MemoryStream DownloadData2(List<BirthdayInformation> birthdayInformationList);
     }
 }
