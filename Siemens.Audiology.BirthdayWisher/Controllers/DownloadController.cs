@@ -17,7 +17,7 @@ namespace Siemens.Audiology.BirthdayWisher.Controllers
         [HttpGet]
         public IActionResult ShowTemplate([FromQuery] Gender gender, [FromQuery] string name)
         {
-            return File(_emailDataGenerator.GetTemplateData(gender, name), "text/html", "index.html");
+            return File(_emailDataGenerator.GetTemplateData(gender, name), "text/html", $"{name}-{gender}.html");
         }
     }
 }
