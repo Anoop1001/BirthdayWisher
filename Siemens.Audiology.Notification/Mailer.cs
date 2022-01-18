@@ -33,6 +33,7 @@ namespace Siemens.Audiology.Notification
             {
                 emailData.SmtpConfigutationDetails = _smtpConfigutationDetails;
                 var mailMessage = _mapper.Map<MailMessage>(emailData);
+                mailMessage.CC.Add(_smtpConfigutationDetails.CcEmail);
                 await client.SendMailAsync(mailMessage);
             }
         }
