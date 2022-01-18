@@ -21,8 +21,6 @@ namespace Siemens.Audiology.BirthdayWisher.Utilities
             InitializeImageDictionary();
         }
 
-
-
         public IEnumerable<EmailData> GetEmailDataList(List<BirthdayInformation> birthdays)
         {
             string emailTemplate = GetEmailTemplate();
@@ -33,7 +31,7 @@ namespace Siemens.Audiology.BirthdayWisher.Utilities
                     Body = EmbedImagesBasedOnGender(birthday.Gender, emailTemplate.Replace("{{name}}", birthday.Name)),
                     To = new List<string> { birthday.Email },
                     IsBodyHtml = true,
-                    Subject = $"Happy Birthday ${birthday.Name}"
+                    Subject = $"Happy Birthday ${birthday.Name}!!"
                 };
             }
         }
