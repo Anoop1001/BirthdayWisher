@@ -22,9 +22,11 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
         private DateTime _nextRun;
         private readonly IBirthdayCalendarProcessor _birthdayCalendarProcessor;
         private readonly IEmailDataGenerator _emailDataGenerator;
+        private readonly string _ccEmailAddress;
         public BirthdayHostedService(IOptions<BirthdaySchedulerOptions> options, IMailer mailer, IBirthdayCalendarProcessor birthdayCalendarProcessor, IEmailDataGenerator emailDataGenerator)
         {
             Schedule = options.Value.CronExpression ?? Schedule;
+            _ccEmailAddress = options.Value.CcEmail;
             _schedule = CrontabSchedule.Parse(Schedule, new CrontabSchedule.ParseOptions { IncludingSeconds = true });
             _nextRun = _schedule.GetNextOccurrence(DateTime.Now);
             _mailer = mailer;
@@ -58,6 +60,7 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
                 var emailDataList = _emailDataGenerator.GetEmailDataList(listOfBirthDays).ToList();
                 emailDataList.ForEach(x =>
                 {
+                    x.Cc = _ccEmailAddress.Split(",");
                     processedEmailData.Add(x);
                 });
                 processedEmailData.ForEach(x =>
