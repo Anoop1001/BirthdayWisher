@@ -74,10 +74,4 @@ namespace Siemens.Audiology.BirthdayWisher.HostedServices
 
         }
     }
-
-    public enum Platform
-    {
-        iOS = 1,
-        Android = 2
-    }
 }
